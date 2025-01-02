@@ -4,7 +4,11 @@ import { Stack } from 'expo-router'
 const NoTabLayout = () => {
   return (
     <>
-      <Stack />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
     </>
   )
 }

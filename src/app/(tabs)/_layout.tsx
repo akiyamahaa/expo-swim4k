@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
-import { Image, Text, View } from 'react-native'
+import { StatusBar, Text, View } from 'react-native'
 import { Home3, Flashy, TableDocument, Profile } from 'iconsax-react-native'
 
 type TabIconProps = {
@@ -13,11 +13,11 @@ type TabIconProps = {
 
 const TabIcon = ({ name, color, focused, Icon, size = 24 }: TabIconProps) => {
   return (
-    <View className="flex-1 pt-1 items-center gap-1">
+    <View className="flex-1 pt-3 items-center gap-1">
       <Icon size={size} color={color} variant="Broken" />
-      <Text style={{ color }} className={`${focused ? 'font-semibold' : 'font-medium'} text-xs`}>
+      {/* <Text style={{ color }} className={`${focused ? 'font-semibold' : 'font-medium'} text-xs`}>
         {name}
-      </Text>
+      </Text> */}
     </View>
   )
 }
@@ -25,6 +25,7 @@ const TabIcon = ({ name, color, focused, Icon, size = 24 }: TabIconProps) => {
 const TabsLayout = () => {
   return (
     <>
+      <StatusBar translucent backgroundColor={'transparent'} barStyle="light-content" />
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
