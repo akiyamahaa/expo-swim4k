@@ -26,7 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="com.quangakiyama.expolatest"/>
-        <data android:scheme="exp+expo-latest"/>
+        <data android:scheme="exp+Swim4k"/>
       </intent-filter>
     </activity>
   </application>

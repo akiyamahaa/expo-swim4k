@@ -12,7 +12,6 @@ type TabIconProps = {
 }
 
 const TabIcon = ({ name, color, focused, Icon, size = 24 }: TabIconProps) => {
-  console.log(color, size)
   return (
     <View className="flex-1 pt-1 items-center gap-1">
       <Icon size={size} color={color} variant="Broken" />

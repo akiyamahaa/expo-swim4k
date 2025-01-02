@@ -1,14 +1,14 @@
-import { Image, StatusBar, StyleSheet, View } from 'react-native'
-import { useAppSelector } from '../redux'
+import { Image, StatusBar, View } from 'react-native'
 import { useEffect } from 'react'
 import { router } from 'expo-router'
 import { images } from '@/constants'
+import { ERouteTable } from '@/constants/route-table'
 
 export default function Root() {
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace('/(no-tabs)/splash')
-    }, 20000)
+      router.replace(ERouteTable.SIGIN_IN)
+    }, 200)
     return () => clearTimeout(timer)
   }, [])
 
