@@ -10,12 +10,9 @@ import ProfileCard from '@/components/profile/ProfileCard'
 const Profile = () => {
   const router = useRouter()
 
-  const onEditProfile = () => {
-    router.push(ERouteTable.EDIT_PROFILE)
-  }
   return (
-    <View className="flex-1 bg-background">
-      <SafeAreaView className={'pb-8 p-4'} style={{ paddingTop: StatusBar.currentHeight }}>
+    <View className="flex-1 bg-background px-4">
+      <SafeAreaView className={'pb-8'} style={{ paddingTop: StatusBar.currentHeight }}>
         <Header title="Cá nhân" />
         <View className="items-center gap-4 mt-5">
           <Image source={images.avatar} className="rounded-full w-28 h-28" />
