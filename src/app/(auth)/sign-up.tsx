@@ -43,7 +43,7 @@ const SignUp = () => {
               {/* Title */}
               <View className="items-center gap-2">
                 <Text className="text-3xl font-bold text-primary-500">Đăng Ký</Text>
-                <Text className="text-sm text-textColor">Đăng ký tài khoản của bạn</Text>
+                <Text className="text-sm text-text-default">Đăng ký tài khoản của bạn</Text>
               </View>
               {/* Input Field */}
               <View className="gap-3 w-full">
@@ -58,7 +58,7 @@ const SignUp = () => {
           </View>
           {/* Register */}
           <View className="flex-row items-center gap-2">
-            <Text className="text-sm text-textColor">Bạn đã có tài khoản?</Text>
+            <Text className="text-sm text-text-default">Bạn đã có tài khoản?</Text>
             <TouchableOpacity onPress={onSignInScreen}>
               <Text className="text-base font-semibold text-primary-500">Đăng nhập</Text>
             </TouchableOpacity>

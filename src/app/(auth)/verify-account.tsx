@@ -50,7 +50,7 @@ const VerifyScreen = () => {
               {/* Title */}
               <View className="items-center gap-2">
                 <Text className="text-3xl font-bold text-primary-500">Xác thực tài khoản</Text>
-                <Text className="text-sm text-textColor">
+                <Text className="text-sm text-text-default">
                   Chúng tôi phải gửi mã xác minh tới email
                 </Text>
                 <Text className="text-sm font-semibold text-primary-500">***demo@gmail.com</Text>
@@ -63,7 +63,7 @@ const VerifyScreen = () => {
               <AppButton title="Xác thực" onPress={onVerify} />
               {/* Info */}
               <View className="flex-row items-center justify-center gap-2">
-                <Text className="text-sm text-textColor" numberOfLines={1}>
+                <Text className="text-sm text-text-default" numberOfLines={1}>
                   Gửi lại mã sau
                 </Text>
                 {timeLeft > 0 ? (

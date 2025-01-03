@@ -14,7 +14,7 @@ const AppInput: React.FC<AppInputProps> = ({ isPassword = false, ...props }) => 
   }
 
   return (
-    <View className="border border-borderColor rounded-xl w-full flex-row items-center justify-between min-h-16">
+    <View className="border border-border-default rounded-xl w-full flex-row items-center justify-between min-h-16">
       <TextInput
         placeholderTextColor={'#71717A'}
         className="text-white flex-1 h-full px-4 rounded-xl"

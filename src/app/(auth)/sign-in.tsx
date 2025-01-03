@@ -44,7 +44,7 @@ const SignIn = () => {
               {/* Title */}
               <View className="items-center gap-2">
                 <Text className="text-3xl font-bold text-primary-500">Đăng nhập</Text>
-                <Text className="text-sm text-textColor">Đăng nhập vào tài khoản của bạn</Text>
+                <Text className="text-sm text-text-default">Đăng nhập vào tài khoản của bạn</Text>
               </View>
               {/* Input Field */}
               <View className="gap-3 w-full">
@@ -53,10 +53,10 @@ const SignIn = () => {
                 <View className="flex-row items-center justify-between mt-1">
                   <View className="flex-row items-center gap-2">
                     <Checkbox value={isChecked} onValueChange={setChecked} />
-                    <Text className="text-sm text-textColor">Ghi nhớ đăng nhập</Text>
+                    <Text className="text-sm text-text-default">Ghi nhớ đăng nhập</Text>
                   </View>
                   <TouchableOpacity>
-                    <Text className="text-sm text-textLink" numberOfLines={1}>
+                    <Text className="text-sm text-text-link" numberOfLines={1}>
                       Quên mật khẩu?
                     </Text>
                   </TouchableOpacity>
@@ -68,7 +68,7 @@ const SignIn = () => {
           </View>
           {/* Sign Up */}
           <View className="flex-row items-center gap-2">
-            <Text className="text-sm text-textColor">Bạn chưa có tài khoản?</Text>
+            <Text className="text-sm text-text-default">Bạn chưa có tài khoản?</Text>
             <TouchableOpacity onPress={onSignUpScreen}>
               <Text className="text-base font-semibold text-primary-500">Đăng ký</Text>
             </TouchableOpacity>

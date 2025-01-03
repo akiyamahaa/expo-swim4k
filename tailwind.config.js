@@ -10,9 +10,17 @@ module.exports = {
         primary: {
           500: '#00CEE6',
         },
-        textColor: '#71717A',
-        textLink: '#2563EB',
-        borderColor: '#3F3F46',
+        text: {
+          default: '#71717A',
+          link: '#2563EB',
+        },
+        border: {
+          default: '#3F3F46',
+        },
+        home: {
+          card: '#3F3F46',
+          ruler: '#71717A',
+        },
       },
     },
   },
