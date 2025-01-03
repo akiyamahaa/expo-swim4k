@@ -1,12 +1,13 @@
 import { supabase } from '@/lib/supabase'
 import { LessonGroup } from '@/models/lessons.model'
-import { createDAO, ETableName } from './dao.service'
+import { createDAO, ETableName, Response } from './dao.service'
 
 // Fetch all LessonGroup
 export type LessonGroupItem = LessonGroup & {
   nLesson?: number
 }
-export async function fetchAll() {
+
+export async function fetchAll(): Promise<Response<LessonGroupItem[]>> {
   const dao = createDAO(ETableName.LESSON_GROUPS)
   const queryResult = await dao.select<
     string,
@@ -22,8 +23,7 @@ export async function fetchAll() {
 
   return {
     data: queryResult.data.map((item) => ({
-      id: item.id,
-      title: item.title,
+      ...item,
       nLessons: item.lessons.length,
     })),
   }

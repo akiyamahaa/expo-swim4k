@@ -9,9 +9,9 @@ export enum ETableName {
   CHAPTERS_TO_LESSONS = 'chapters_to_lessons',
 }
 
-export type Reponse<DataType> = {
+export type Response<DataType> = {
   error?: string | null
-  data: DataType
+  data: DataType | null
 }
 
 const SCHEMA_NAME = 'swim4k'

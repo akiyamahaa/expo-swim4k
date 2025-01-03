@@ -1,9 +1,9 @@
 import { TrainingProgram, TrainingChapter } from '@/models/training.model'
-import { createDAO, ETableName, Reponse } from './dao.service'
+import { createDAO, ETableName, Response } from './dao.service'
 import { Lesson } from '@/models/lessons.model'
 
 // Fetch all Training Programs
-export async function fetchAll(): Promise<Reponse<TrainingProgram[]>> {
+export async function fetchAll(): Promise<Response<TrainingProgram[]>> {
   const dao = createDAO(ETableName.TRAINING_PROGRAMS)
   const queryResult = await dao.select<string, TrainingProgram>()
 
@@ -25,7 +25,12 @@ export type ProgramChapterItem = {
   lessons: Lesson[]
 }
 
-export async function show(id: number) {
+export type ProgramDetail = {
+  programs: TrainingProgram
+  chapters: ProgramChapterItem[]
+}
+
+export async function show(id: number): Promise<Response<ProgramDetail>> {
   const programsDAO = createDAO(ETableName.TRAINING_PROGRAMS)
   const chaptersToLessonsDAO = createDAO(ETableName.CHAPTERS_TO_LESSONS)
 
@@ -39,14 +44,14 @@ export async function show(id: number) {
   if (programsResult.error || !programsResult.data) {
     return {
       error: programsResult.error.message,
-      data: [],
+      data: null,
     }
   }
 
   if (chapterResult.error || !chapterResult.data) {
     return {
       error: chapterResult.error.message,
-      data: [],
+      data: null,
     }
   }
 
