@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { router } from 'expo-router'
 import { images } from '@/constants'
 import { ERouteTable } from '@/constants/route-table'
-import { fetchAll, show } from '@/services/training.service'
+import { fetchAll } from '@/services/lesson-group.service'
 
 export default function Root() {
   useEffect(() => {
@@ -11,6 +11,10 @@ export default function Root() {
       router.replace(ERouteTable.SIGIN_IN)
     }, 200)
     return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    fetchAll()
   }, [])
 
   return (
