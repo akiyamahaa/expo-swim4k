@@ -24,9 +24,9 @@ const AppInput: React.FC<AppInputProps> = ({ isPassword = false, ...props }) => 
       {isPassword && (
         <TouchableOpacity onPress={togglePasswordVisibility} className="mr-4">
           {isPasswordVisible ? (
-            <EyeSlash size="24" color="#71717A" variant="Outline" />
-          ) : (
             <Eye size="24" color="#71717A" variant="Outline" />
+          ) : (
+            <EyeSlash size="24" color="#71717A" variant="Outline" />
           )}
         </TouchableOpacity>
       )}
