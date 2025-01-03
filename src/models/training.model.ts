@@ -2,6 +2,7 @@ export type TrainingProgram = {
   id: number
   title: string
   short_content: string
+  thumbnail: string
   created_at: Date
 }
 

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { router } from 'expo-router'
 import { images } from '@/constants'
 import { ERouteTable } from '@/constants/route-table'
+import { fetchAll, show } from '@/services/training.service'
 
 export default function Root() {
   useEffect(() => {
