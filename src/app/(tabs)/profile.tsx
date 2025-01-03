@@ -1,15 +1,12 @@
-import { Image, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, StatusBar, Text, View } from 'react-native'
 import React from 'react'
 import Header from '@/components/Header'
 import { images } from '@/constants'
-import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'
 import { Key, Logout, User } from 'iconsax-react-native'
 import ProfileCard from '@/components/profile/ProfileCard'
 
 const Profile = () => {
-  const router = useRouter()
-
   return (
     <View className="flex-1 bg-background px-4">
       <SafeAreaView className={'pb-8'} style={{ paddingTop: StatusBar.currentHeight }}>
