@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, View } from 'react-native'
+import { Alert, Image, ScrollView, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { images } from '@/constants'
 import HomeCard from '@/components/home/HomeCard'
@@ -16,7 +16,7 @@ const Home = () => {
       }
       setLessonGroup(data || [])
     } catch (e) {
-      console.log('🚀 ~ getLessons ~', e)
+      Alert.alert('Lỗi', 'Có lỗi xảy ra khi tải dữ liệu')
     }
   }
 

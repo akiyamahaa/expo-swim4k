@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -8,18 +9,73 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { images } from '@/constants'
 import * as ImagePicker from 'expo-image-picker'
 import { Camera } from 'iconsax-react-native'
 import AppInput from '@/components/AppInput'
 import AppButton from '@/components/AppButton'
+import { useAppDispatch, useAppSelector } from '@/redux'
+import { updateUserData, UserProfileUpdate } from '@/services/users.service'
+import { getSupabaseUrl, uploadFile } from '@/services/images.service'
+import { setUser } from '@/redux/features/userSlice'
+import { useRouter } from 'expo-router'
 
-type Props = {}
+const EditProfile = () => {
+  const router = useRouter()
+  const dispatch = useAppDispatch()
+  const currentProfile = useAppSelector((state) => state.user.data.profile)
+  const [image, setImage] = useState<string | null | undefined>(
+    getSupabaseUrl(currentProfile?.image!),
+  )
 
-const EditProfile = (props: Props) => {
-  const [image, setImage] = useState<string | null>(null)
+  const [profile, setProfile] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    image: currentProfile?.image,
+  })
+
+  useEffect(() => {
+    setProfile({
+      name: currentProfile?.name || '',
+      email: currentProfile?.email || '',
+      phone: currentProfile?.phone || '',
+      image: currentProfile?.image,
+    })
+  }, [currentProfile])
+
+  const onSubmit = async () => {
+    const userData: UserProfileUpdate = {
+      name: profile.name.trim(),
+      email: profile.email.toLowerCase().trim(),
+      phone: profile.phone.trim(),
+    }
+
+    // Upload image
+    if (image && image.length) {
+      const { success, message, data } = await uploadFile('images', image)
+      if (!success) {
+        console.log('Failed to upload image:', message)
+        return Alert.alert('Profile', 'Failed to upload your image. Please try again later')
+      }
+      userData.image = data
+    }
+
+    if (Object.values(userData).some((value) => value.length === 0)) {
+      return Alert.alert('Profile', 'Please fill all the fields before updating your profile')
+    }
+
+    // Update user data
+    const { success, message, data } = await updateUserData(currentProfile!.id, userData)
+    if (!success) {
+      console.log('Failed to update profile:', message)
+      return Alert.alert('Profile', 'Failed to update your profile. Please try again later')
+    }
+    dispatch(setUser({ profile: data }))
+    router.back()
+  }
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -60,12 +116,24 @@ const EditProfile = (props: Props) => {
                   </View>
                   {/* Group Input */}
                   <View className="gap-4 mt-10">
-                    <AppInput placeholder="họ và tên" value="Nguyễn Văn A" />
-                    <AppInput placeholder="Email" />
-                    <AppInput placeholder="Số điện thoại" />
+                    <AppInput
+                      placeholder="họ và tên"
+                      value={profile.name}
+                      onChangeText={(text) => setProfile({ ...profile, name: text })}
+                    />
+                    <AppInput
+                      placeholder="Email"
+                      value={profile.email}
+                      onChangeText={(text) => setProfile({ ...profile, email: text })}
+                    />
+                    <AppInput
+                      placeholder="Số điện thoại"
+                      value={profile.phone}
+                      onChangeText={(text) => setProfile({ ...profile, phone: text })}
+                    />
                   </View>
                 </View>
-                <AppButton title="Lưu" />
+                <AppButton title="Lưu" onPress={onSubmit} />
               </View>
             </View>
           </SafeAreaView>

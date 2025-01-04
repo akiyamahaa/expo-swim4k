@@ -14,8 +14,6 @@ export async function fetchByGroup(lessonGroupId: number): Promise<Response<Less
     }
   }
 
-  console.log(JSON.stringify(queryResult.data, null, 2))
-
   return {
     data: queryResult.data,
   }
@@ -32,8 +30,6 @@ export async function show(id: number): Promise<Response<Lesson>> {
       data: null,
     }
   }
-
-  console.log(JSON.stringify(queryResult.data, null, 2))
 
   return {
     data: queryResult.data,
