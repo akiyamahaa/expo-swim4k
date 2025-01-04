@@ -3,11 +3,16 @@ import { useEffect } from 'react'
 import { router } from 'expo-router'
 import { images } from '@/constants'
 import { ERouteTable } from '@/constants/route-table'
+import { useAppSelector } from '@/redux'
 
 export default function Root() {
+  const profile = useAppSelector((state) => state.user.data.profile)
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace(ERouteTable.SIGIN_IN)
+      if (profile) {
+        return router.replace(ERouteTable.HOME)
+      }
+      return router.replace(ERouteTable.SIGIN_IN)
     }, 200)
     return () => clearTimeout(timer)
   }, [])

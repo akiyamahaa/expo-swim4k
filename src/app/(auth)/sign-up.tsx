@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -14,13 +15,54 @@ import Checkbox from 'expo-checkbox'
 import AppButton from '@/components/AppButton'
 import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'
+import { supabase } from '@/lib/supabase'
 
 const SignUp = () => {
   const router = useRouter()
-  const [isChecked, setChecked] = useState(false)
 
-  const onSignUp = () => {
-    router.push(ERouteTable.VERIFY_ACCOUNT)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+
+  const onSignUp = async () => {
+    try {
+      // setLoading(true)
+      const formData = {
+        email: email.toLowerCase().trim(),
+        password: password.trim(),
+        name: name.trim(),
+      }
+      if (
+        formData.email.length === 0 ||
+        formData.password.length === 0 ||
+        formData.name.length === 0
+      ) {
+        return Alert.alert('Error', 'Please fill all the fields!')
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+
+        options: {
+          data: {
+            name: formData.name,
+          },
+        },
+      })
+      console.log('supabase.auth.signUp', data, error)
+
+      if (error) {
+        throw error
+      }
+      Alert.alert('Sign Up', 'Account created successfully. Please login to continue.')
+      router.replace(ERouteTable.SIGIN_IN)
+    } catch (error) {
+      console.error(error)
+      Alert.alert('Error', 'Something went wrong!')
+    } finally {
+      // setLoading(false)
+    }
   }
   const onSignInScreen = () => {
     router.push(ERouteTable.SIGIN_IN)
@@ -47,10 +89,10 @@ const SignUp = () => {
               </View>
               {/* Input Field */}
               <View className="gap-3 w-full">
-                <AppInput placeholder="Tên" />
-                <AppInput placeholder="Email" />
-                <AppInput placeholder="Mật khẩu" isPassword={true} />
-                <AppInput placeholder="Nhập lại mật khẩu" isPassword={true} />
+                <AppInput placeholder="Tên" onChangeText={setName} />
+                <AppInput placeholder="Email" onChangeText={setEmail} />
+                <AppInput placeholder="Mật khẩu" isPassword={true} onChangeText={setPassword} />
+                {/* <AppInput placeholder="Nhập lại mật khẩu" isPassword={true} /> */}
               </View>
               {/* Button */}
               <AppButton title="Đăng ký" onPress={onSignUp} />

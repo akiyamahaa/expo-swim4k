@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -14,13 +15,61 @@ import Checkbox from 'expo-checkbox'
 import AppButton from '@/components/AppButton'
 import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'
+import { Session } from '@supabase/supabase-js'
+import { getUserData } from '@/services/users.service'
+import { useAppDispatch } from '@/redux'
+import { setUser } from '@/redux/features/userSlice'
+import { supabase } from '@/lib/supabase'
 
 const SignIn = () => {
   const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const dispatch = useAppDispatch()
   const [isChecked, setChecked] = useState(false)
 
-  const onSignIn = () => {
-    router.replace(ERouteTable.HOME)
+  async function updateProfileState(session: Session) {
+    try {
+      const res = await getUserData(session.user.id)
+      if (res.success) {
+        dispatch(setUser({ session, profile: res.data }))
+        router.replace(ERouteTable.HOME)
+        return { session, profile: res.data }
+      } else {
+        Alert.alert('getUserData', res.message)
+      }
+    } catch (error: any) {
+      console.error(error)
+      Alert.alert('Error', error)
+    }
+  }
+
+  const onSignIn = async () => {
+    try {
+      // setLoading(true)
+      const formData = {
+        email: email.toLowerCase().trim(),
+        password: password.trim(),
+      }
+      if (formData.email.length === 0 || formData.password.length === 0) {
+        return Alert.alert('Error', 'Please fill all the fields!')
+      }
+
+      const { error, data } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (error) {
+        throw error
+      }
+      await updateProfileState(data!.session)
+    } catch (error) {
+      console.error(error)
+      Alert.alert('Login', 'There was an error logging in', [{ text: 'OK' }])
+    } finally {
+      // setLoading(false)
+    }
   }
 
   const onSignUpScreen = () => {
@@ -48,8 +97,8 @@ const SignIn = () => {
               </View>
               {/* Input Field */}
               <View className="gap-3 w-full">
-                <AppInput placeholder="Email" />
-                <AppInput placeholder="Mật khẩu" isPassword={true} />
+                <AppInput placeholder="Email" onChangeText={setEmail} />
+                <AppInput placeholder="Mật khẩu" isPassword={true} onChangeText={setPassword} />
                 <View className="flex-row items-center justify-between mt-1">
                   <View className="flex-row items-center gap-2">
                     <Checkbox value={isChecked} onValueChange={setChecked} />
