@@ -3,21 +3,30 @@ import React from 'react'
 import { Video } from 'iconsax-react-native'
 import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'
+import { LessonGroupItem } from '@/services/lesson-group.service'
 
-type Props = {}
+type Props = {
+  data: LessonGroupItem
+}
 
-const HomeCard = (props: Props) => {
+const HomeCard = ({ data }: Props) => {
   const router = useRouter()
 
   const onPracticeList = () => {
-    router.push(ERouteTable.PRACTICE_LIST)
+    router.push({
+      pathname: ERouteTable.PRACTICE_LIST,
+      params: {
+        lessonGroupId: data.id,
+        groupTitle: data.title,
+      },
+    })
   }
   return (
     <TouchableOpacity onPress={onPracticeList}>
       <View className="w-full rounded-2xl bg-home-card px-4 py-3">
         <View className="w-full">
           <Text className="text-2xl font-bold text-white" numberOfLines={2}>
-            DÀNH CHO NGƯỜI MỚI
+            {data.title}
           </Text>
         </View>
         <View className="flex-row items-center gap-2">
@@ -25,7 +34,7 @@ const HomeCard = (props: Props) => {
           <Video size="32" color="#fff" variant="Broken" />
         </View>
         <View>
-          <Text className="text-xs text-white">128 Video</Text>
+          <Text className="text-xs text-white">{data.nLessons} Video</Text>
         </View>
       </View>
     </TouchableOpacity>

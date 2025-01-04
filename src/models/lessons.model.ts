@@ -20,7 +20,7 @@ export type Lesson = {
   age: number
   distance: number
   kcal: number
-  improvements: string // phan tach boi \n
+  improments: string // phan tach boi \n
   preparations: string // phan tach boi \n
   thumbnail: string
   video_url: string

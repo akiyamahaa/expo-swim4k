@@ -4,7 +4,7 @@ import { createDAO, ETableName, Response } from './dao.service'
 
 // Fetch all LessonGroup
 export type LessonGroupItem = LessonGroup & {
-  nLesson?: number
+  nLessons?: number
 }
 
 export async function fetchAll(): Promise<Response<LessonGroupItem[]>> {

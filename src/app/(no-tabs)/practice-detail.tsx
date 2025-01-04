@@ -1,50 +1,76 @@
-import { Image, SafeAreaView, StatusBar, Text, View } from 'react-native'
-import React from 'react'
+import { Alert, Image, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
 import { images } from '@/constants'
 import Header from '@/components/Header'
 import { Calculator, Repeat, Routing, Speedometer, Timer, User } from 'iconsax-react-native'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Lesson } from '@/models/lessons.model'
+import { show } from '@/services/lesson.service'
+import { levelTitle } from '@/constants/common'
 
-type Props = {}
+const PracticeDetail = () => {
+  const router = useRouter()
+  const { lessonId, groupTitle } = useLocalSearchParams<{
+    lessonId: string
+    groupTitle: string
+  }>()
 
-const PracticeDetail = (props: Props) => {
+  const [lesson, setLesson] = React.useState<Lesson | null>(null)
+
+  const getLessonDetail = async () => {
+    // Call API
+    try {
+      const { data, error } = await show(Number(lessonId))
+      if (error) {
+        throw error
+      }
+      setLesson(data)
+    } catch (e: any) {
+      Alert.alert('Error', e.message)
+      router.back()
+    }
+  }
+  useEffect(() => {
+    getLessonDetail()
+  }, [])
   return (
     <View className="flex-1 bg-background">
       <SafeAreaView className={'pb-8'} style={{ paddingTop: StatusBar.currentHeight }}>
-        <Header title="Dành cho người mới" hasBack />
+        <View className="px-4">
+          <Header title={groupTitle} hasBack />
+        </View>
         <View className="mt-4">
           <Image source={images.practice1} className="w-full h-64" />
         </View>
         <View className="px-4 gap-6 mt-6">
           {/*  */}
           <View className="gap-3">
-            <Text className="text-xl text-primary-500 font-semibold">
-              Cách bơi ngửa cho người mới bắt đầu
-            </Text>
+            <Text className="text-xl text-primary-500 font-semibold">{lesson?.title}</Text>
             <View className="flex-row items-center flex-wrap -mx-2">
               {/* info-section */}
               <View className="flex-row items-center gap-2 w-1/3 mb-2 px-2">
                 <Speedometer size="16" color="#fff" variant="Broken" />
-                <Text className="text-white text-xs">Người mới</Text>
+                <Text className="text-white text-xs">{levelTitle[lesson?.level || 0]}</Text>
               </View>
               <View className="flex-row items-center gap-2 w-1/3 mb-2 px-2">
                 <Repeat size="16" color="#fff" variant="Broken" />
-                <Text className="text-white text-xs">10 lần</Text>
+                <Text className="text-white text-xs">{lesson?.repeats} lần</Text>
               </View>
               <View className="flex-row items-center gap-2 w-1/3 mb-2 px-2">
                 <Timer size="16" color="#fff" variant="Broken" />
-                <Text className="text-white text-xs">20 phút</Text>
+                <Text className="text-white text-xs">60 phút</Text>
               </View>
               <View className="flex-row items-center gap-2 w-1/3 mb-2 px-2">
                 <User size="16" color="#fff" variant="Broken" />
-                <Text className="text-white text-xs">U-6</Text>
+                <Text className="text-white text-xs">U-{lesson?.age}</Text>
               </View>
               <View className="flex-row items-center gap-2 w-1/3 mb-2 px-2">
                 <Routing size="16" color="#fff" variant="Broken" />
-                <Text className="text-white text-xs">30 m</Text>
+                <Text className="text-white text-xs">{lesson?.distance} m</Text>
               </View>
               <View className="flex-row items-center gap-2 w-1/3 mb-2 px-2">
                 <Calculator size="16" color="#fff" variant="Broken" />
-                <Text className="text-white text-xs">17 kcal</Text>
+                <Text className="text-white text-xs">{lesson?.kcal} kcal</Text>
               </View>
             </View>
           </View>
@@ -52,24 +78,26 @@ const PracticeDetail = (props: Props) => {
           <View className="gap-2">
             <Text className="text-xl text-white font-semibold">Cải thiện</Text>
             <View className="flex-row items-center flex-wrap">
-              <View className="px-3 py-1 bg-home-card rounded-md mr-2">
-                <Text className="text-sm text-white">Tăng chiều cao</Text>
-              </View>
-              <View className="px-3 py-1 bg-home-card rounded-md mr-2">
-                <Text className="text-sm text-white">Đốt cháy calo</Text>
-              </View>
-              <View className="px-3 py-1 bg-home-card rounded-md mr-2">
-                <Text className="text-sm text-white">Săn chắc vòng 2</Text>
-              </View>
+              {lesson?.improments &&
+                lesson.improments.split('\n').map((item, index) => (
+                  <View key={index} className="px-3 py-1 bg-home-card rounded-md mr-2 mb-2">
+                    <Text className="text-sm text-white">{item}</Text>
+                  </View>
+                ))}
             </View>
           </View>
           {/*  */}
           <View className="gap-2">
             <Text className="text-xl text-white font-semibold">Chuẩn bị</Text>
             <View className="gap-1">
-              <Text className="text-sm text-white">1. Đồ bơi</Text>
-              <Text className="text-sm text-white">2. Kính bơi</Text>
-              <Text className="text-sm text-white">3. Áo phông</Text>
+              {lesson?.preparations &&
+                lesson.preparations.split('\n').map((item, index) => (
+                  <View key={index} className="flex-row items-center gap-2">
+                    <Text className="text-sm text-white">
+                      {index + 1}. {item}
+                    </Text>
+                  </View>
+                ))}
             </View>
           </View>
         </View>
