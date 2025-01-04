@@ -11,7 +11,11 @@ const Header = ({ hasBack = false, title }: Props) => {
   return (
     <View className="w-full flex-row justify-between items-center">
       {hasBack ? <BackButton /> : <View className="w-8" />}
-      <Text className="text-lg font-bold text-white uppercase">{title}</Text>
+      <View className="flex-1">
+        <Text className="text-lg font-bold text-white uppercase text-center" numberOfLines={1}>
+          {title}
+        </Text>
+      </View>
       <View className="w-8" />
     </View>
   )

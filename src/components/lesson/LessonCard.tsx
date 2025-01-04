@@ -3,13 +3,19 @@ import React from 'react'
 import { images } from '@/constants'
 import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'
+import { TrainingProgram } from '@/models/training.model'
 
-type Props = {}
+type Props = {
+  data: TrainingProgram
+}
 
-const LessonCard = (props: Props) => {
+const LessonCard = ({ data }: Props) => {
   const router = useRouter()
   const onPracticeDetail = () => {
-    router.push(ERouteTable.LESSON_DETAIL)
+    router.push({
+      pathname: ERouteTable.LESSON_DETAIL,
+      params: { trainingId: data.id, groupTitle: data.title },
+    })
   }
 
   return (
@@ -17,16 +23,16 @@ const LessonCard = (props: Props) => {
       <View className="w-full gap-3">
         <View className="rounded-2xl overflow-hidden w-full min-h-52">
           <ImageBackground
-            source={images.practice1}
+            source={data.thumbnail ? { uri: data.thumbnail } : images.practice1}
             className="flex-1 flex-row items-start justify-end p-3 object-cover"
           ></ImageBackground>
         </View>
         <View className="">
           <Text className="text-white font-semibold text-base" numberOfLines={2}>
-            Cách bơi ngửa cho người mới bắt đầu
+            {data.title}
           </Text>
           <Text className="text-text-default text-sm" numberOfLines={2}>
-            Học tất cả các bài tập bơi cần thiết để thành thạo nghệ thuật bơi lội tại đây!
+            {data.short_content}
           </Text>
         </View>
       </View>

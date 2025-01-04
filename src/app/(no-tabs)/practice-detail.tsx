@@ -1,12 +1,13 @@
-import { Alert, Image, SafeAreaView, StatusBar, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
-import { images } from '@/constants'
+import { Alert, Image, SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { Calculator, Repeat, Routing, Speedometer, Timer, User } from 'iconsax-react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Lesson } from '@/models/lessons.model'
 import { show } from '@/services/lesson.service'
 import { levelTitle } from '@/constants/common'
+import YoutubePlayer, { PLAYER_STATES } from 'react-native-youtube-iframe'
+import { wp } from '@/helpers/common'
 
 const PracticeDetail = () => {
   const router = useRouter()
@@ -15,7 +16,15 @@ const PracticeDetail = () => {
     groupTitle: string
   }>()
 
-  const [lesson, setLesson] = React.useState<Lesson | null>(null)
+  const [lesson, setLesson] = useState<Lesson | null>(null)
+  const [playing, setPlaying] = useState(false)
+
+  const onStateChange = useCallback((state: PLAYER_STATES) => {
+    if (state === 'ended') {
+      setPlaying(false)
+      Alert.alert('video has finished playing!')
+    }
+  }, [])
 
   const getLessonDetail = async () => {
     // Call API
@@ -34,13 +43,19 @@ const PracticeDetail = () => {
     getLessonDetail()
   }, [])
   return (
-    <View className="flex-1 bg-background">
+    <ScrollView className="flex-1 bg-background" showsVerticalScrollIndicator={false}>
       <SafeAreaView className={'pb-8'} style={{ paddingTop: StatusBar.currentHeight }}>
         <View className="px-4">
           <Header title={groupTitle} hasBack />
         </View>
         <View className="mt-4">
-          <Image source={images.practice1} className="w-full h-64" />
+          <YoutubePlayer
+            height={240}
+            width={wp(100)}
+            play={playing}
+            videoId={lesson?.video_url || 'LUaLUwtu6jM'}
+            onChangeState={onStateChange}
+          />
         </View>
         <View className="px-4 gap-6 mt-6">
           {/*  */}
@@ -79,11 +94,14 @@ const PracticeDetail = () => {
             <Text className="text-xl text-white font-semibold">Cải thiện</Text>
             <View className="flex-row items-center flex-wrap">
               {lesson?.improments &&
-                lesson.improments.split('\n').map((item, index) => (
-                  <View key={index} className="px-3 py-1 bg-home-card rounded-md mr-2 mb-2">
-                    <Text className="text-sm text-white">{item}</Text>
-                  </View>
-                ))}
+                lesson.improments
+                  .split('\n')
+                  .filter((value) => value !== '')
+                  .map((item, index) => (
+                    <View key={index} className="px-3 py-1 bg-home-card rounded-md mr-2 mb-2">
+                      <Text className="text-sm text-white">{item}</Text>
+                    </View>
+                  ))}
             </View>
           </View>
           {/*  */}
@@ -102,7 +120,7 @@ const PracticeDetail = () => {
           </View>
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   )
 }
 
