@@ -53,7 +53,7 @@ const PracticeDetail = () => {
             height={240}
             width={wp(100)}
             play={playing}
-            videoId={lesson?.video_url || 'LUaLUwtu6jM'}
+            videoId={lesson?.video_url || '8gVvGAWJGps'}
             onChangeState={onStateChange}
           />
         </View>
