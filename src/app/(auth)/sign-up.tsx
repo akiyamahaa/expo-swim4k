@@ -11,7 +11,6 @@ import {
 import React, { useState } from 'react'
 import { images } from '@/constants'
 import AppInput from '@/components/AppInput'
-import Checkbox from 'expo-checkbox'
 import AppButton from '@/components/AppButton'
 import { useRouter } from 'expo-router'
 import { ERouteTable } from '@/constants/route-table'

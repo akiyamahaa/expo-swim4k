@@ -6,14 +6,15 @@ import { ERouteTable } from '@/constants/route-table'
 import { useAppSelector } from '@/redux'
 
 export default function Root() {
-  const profile = useAppSelector((state) => state.user.data.profile)
+  const profile = useAppSelector((state) => state.user.data.profile) // lấy thông tin người dùng
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (profile) {
         return router.replace(ERouteTable.HOME)
       }
       return router.replace(ERouteTable.SIGIN_IN)
-    }, 200)
+    }, 2000)
     return () => clearTimeout(timer)
   }, [])
 
